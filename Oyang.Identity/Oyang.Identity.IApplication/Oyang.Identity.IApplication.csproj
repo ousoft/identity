@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Oyang.Identity.Infrastructure\Oyang.Identity.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

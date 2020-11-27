@@ -5,12 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="10.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Oyang.Identity.Domain\Oyang.Identity.Domain.csproj" />
+    <ProjectReference Include="..\Oyang.Identity.IApplication\Oyang.Identity.IApplication.csproj" />
+    <ProjectReference Include="..\Oyang.Identity.Infrastructure\Oyang.Identity.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

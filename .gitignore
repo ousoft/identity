@@ -3,8 +3,12 @@
 ################################################################################
 
 /Oyang.Identity/.vs
-/Oyang.Identity/Oyang.Identity.ApplicationCore/bin
-/Oyang.Identity/Oyang.Identity.ApplicationCore/obj
+/Oyang.Identity/Oyang.Identity.Application/bin
+/Oyang.Identity/Oyang.Identity.Application/obj
+/Oyang.Identity/Oyang.Identity.IApplication/bin
+/Oyang.Identity/Oyang.Identity.IApplication/obj
+/Oyang.Identity/Oyang.Identity.Domain/bin
+/Oyang.Identity/Oyang.Identity.Domain/obj
 /Oyang.Identity/Oyang.Identity.Infrastructure/bin
 /Oyang.Identity/Oyang.Identity.Infrastructure/obj
 /Oyang.Identity/Oyang.Identity.WebApi/bin

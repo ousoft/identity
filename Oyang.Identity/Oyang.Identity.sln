@@ -3,11 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oyang.Identity.WebApi", "Oyang.Identity.WebApi\Oyang.Identity.WebApi.csproj", "{4AE5A455-6DC1-4AB6-8EEF-DB3BB9CB92C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oyang.Identity.WebApi", "Oyang.Identity.WebApi\Oyang.Identity.WebApi.csproj", "{4AE5A455-6DC1-4AB6-8EEF-DB3BB9CB92C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oyang.Identity.ApplicationCore", "Oyang.Identity.ApplicationCore\Oyang.Identity.ApplicationCore.csproj", "{A256B36A-A22F-4810-93C5-28F5158C4B99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oyang.Identity.Infrastructure", "Oyang.Identity.Infrastructure\Oyang.Identity.Infrastructure.csproj", "{86064956-9269-4515-BF5E-326B062D91D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oyang.Identity.Infrastructure", "Oyang.Identity.Infrastructure\Oyang.Identity.Infrastructure.csproj", "{86064956-9269-4515-BF5E-326B062D91D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oyang.Identity.Domain", "Oyang.Identity.Domain\Oyang.Identity.Domain.csproj", "{E4C5B2BB-A475-4CBA-850E-517C0017E150}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oyang.Identity.Application", "Oyang.Identity.Application\Oyang.Identity.Application.csproj", "{ED7BBEF7-4EF4-4C9A-8D85-503ECD4D06EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oyang.Identity.IApplication", "Oyang.Identity.IApplication\Oyang.Identity.IApplication.csproj", "{6E9183F7-CBB2-4FAF-9C04-61E6F1B1F609}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +23,22 @@ Global
 		{4AE5A455-6DC1-4AB6-8EEF-DB3BB9CB92C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AE5A455-6DC1-4AB6-8EEF-DB3BB9CB92C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AE5A455-6DC1-4AB6-8EEF-DB3BB9CB92C5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A256B36A-A22F-4810-93C5-28F5158C4B99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A256B36A-A22F-4810-93C5-28F5158C4B99}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A256B36A-A22F-4810-93C5-28F5158C4B99}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A256B36A-A22F-4810-93C5-28F5158C4B99}.Release|Any CPU.Build.0 = Release|Any CPU
 		{86064956-9269-4515-BF5E-326B062D91D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{86064956-9269-4515-BF5E-326B062D91D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86064956-9269-4515-BF5E-326B062D91D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86064956-9269-4515-BF5E-326B062D91D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4C5B2BB-A475-4CBA-850E-517C0017E150}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4C5B2BB-A475-4CBA-850E-517C0017E150}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4C5B2BB-A475-4CBA-850E-517C0017E150}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4C5B2BB-A475-4CBA-850E-517C0017E150}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED7BBEF7-4EF4-4C9A-8D85-503ECD4D06EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED7BBEF7-4EF4-4C9A-8D85-503ECD4D06EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED7BBEF7-4EF4-4C9A-8D85-503ECD4D06EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED7BBEF7-4EF4-4C9A-8D85-503ECD4D06EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E9183F7-CBB2-4FAF-9C04-61E6F1B1F609}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E9183F7-CBB2-4FAF-9C04-61E6F1B1F609}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E9183F7-CBB2-4FAF-9C04-61E6F1B1F609}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E9183F7-CBB2-4FAF-9C04-61E6F1B1F609}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

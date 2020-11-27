@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Oyang.Identity.ApplicationCore.Entities
+namespace Oyang.Identity.IApplication
 {
-    public abstract class BaseEntity
+    public interface IApplicationService
     {
-        public Guid Id { get; set; }
     }
 }
