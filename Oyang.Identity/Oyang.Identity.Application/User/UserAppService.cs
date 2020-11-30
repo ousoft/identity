@@ -57,7 +57,7 @@ namespace Oyang.Identity.Application.User
 
         public void Remove(Guid id)
         {
-            //_dbContext.Set<UserEntity>().Remove(id);
+            _dbContext.RemoveWithAudit<UserEntity>(id);
         }
 
         public void ResetPassword(ResetPasswordInputDto input)
@@ -66,7 +66,7 @@ namespace Oyang.Identity.Application.User
             ValidationObject.Validate(string.IsNullOrWhiteSpace(input.Password2), "确认密码不能为空");
             ValidationObject.Validate(input.Password != input.Password2, "密码和确认密码不一致");
             var entity = _dbContext.Find<UserEntity>(input.Id);
-            entity.PasswordHash = HashAlgorithmHelper.Create(input.Password, HashMode.MD5); ;
+            entity.PasswordHash = HashAlgorithmHelper.ComputeMD5(input.Password); ;
         }
 
         public void SetRole(SetRoleInputDto input)

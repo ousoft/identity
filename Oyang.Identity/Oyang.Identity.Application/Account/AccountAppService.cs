@@ -30,7 +30,7 @@ namespace Oyang.Identity.Application.Account
             ValidationObject.Validate(string.IsNullOrWhiteSpace(input.Password), "密码不能为空");
             var userEntity = _dbContext.Set<UserEntity>().SingleOrDefault(t => t.LoginName == input.LoginName);
             ValidationObject.Validate(userEntity == null, "登录名不存在");
-            var passwordHash = HashAlgorithmHelper.Create(input.Password, HashMode.MD5);
+            var passwordHash = HashAlgorithmHelper.ComputeMD5(input.Password);
             ValidationObject.Validate(userEntity.PasswordHash != passwordHash, "密码不正确");
 
             var currentUser = new CurrentUser(userEntity.Id, userEntity.LoginName);
