@@ -10,17 +10,21 @@ namespace Oyang.Identity.Infrastructure.Common
     {
         public CurrentUser(
             Guid id,
-            string loginName
+            string loginName,
+            IReadOnlyList<string> roles,
+            IReadOnlyList<string> permissions
             )
         {
             Id = id;
             LoginName = loginName;
+            Roles = roles;
+            Permissions = permissions;
         }
         public Guid Id { get;  }
         public string LoginName { get;  }
         public bool IsAuthenticated => Id != Guid.Empty;
-        public IReadOnlyList<string> Roles { get; set; }
-        public IReadOnlyList<string> Permissions { get; set; }
+        public IReadOnlyList<string> Roles { get;  }
+        public IReadOnlyList<string> Permissions { get; }
 
         public bool HasRole(string name)
         {

@@ -33,16 +33,13 @@ namespace Oyang.Identity.Application.User
             _mapper = mapper;
         }
 
-        public void Add(AddInputDto input)
+
+
+        public UserDto Get(Guid id)
         {
-            ValidationObject.Validate(string.IsNullOrWhiteSpace(input.LoginName), "登录名不能为空");
-            ValidationObject.Validate(string.IsNullOrWhiteSpace(input.Password), "密码不能为空");
-            ValidationObject.Validate(string.IsNullOrWhiteSpace(input.Password2), "确认密码不能为空");
-            ValidationObject.Validate(input.Password != input.Password2, "密码和确认密码不一致");
-            var exist = _dbContext.Set<UserEntity>().AsNoTracking().Any(t => t.LoginName == input.LoginName);
-            ValidationObject.Validate(exist, "登录名已存在");
-            var entity =_mapper.Map<AddInputDto, UserEntity>(input);
-            _dbContext.AddWithAudit(entity);
+            var entity = _dbContext.Set<UserEntity>().Find(id);
+            var dto = _mapper.Map<UserEntity, UserDto>(entity);
+            return dto;
         }
 
         public Pagination<UserDto> GetList(GetListInputDto input)
@@ -53,6 +50,18 @@ namespace Oyang.Identity.Application.User
             var listDto = _mapper.Map<List<UserEntity>, List<UserDto>>(listEntity);
             var pagination = new Pagination<UserDto>(input, totalCount, listDto);
             return pagination;
+        }
+
+        public void Add(AddInputDto input)
+        {
+            ValidationObject.Validate(string.IsNullOrWhiteSpace(input.LoginName), "登录名不能为空");
+            ValidationObject.Validate(string.IsNullOrWhiteSpace(input.Password), "密码不能为空");
+            ValidationObject.Validate(string.IsNullOrWhiteSpace(input.Password2), "确认密码不能为空");
+            ValidationObject.Validate(input.Password != input.Password2, "密码和确认密码不一致");
+            var exist = _dbContext.Set<UserEntity>().AsNoTracking().Any(t => t.LoginName == input.LoginName);
+            ValidationObject.Validate(exist, "登录名已存在");
+            var entity = _mapper.Map<AddInputDto, UserEntity>(input);
+            _dbContext.AddWithAudit(entity);
         }
 
         public void Remove(Guid id)
@@ -66,31 +75,31 @@ namespace Oyang.Identity.Application.User
             ValidationObject.Validate(string.IsNullOrWhiteSpace(input.Password2), "确认密码不能为空");
             ValidationObject.Validate(input.Password != input.Password2, "密码和确认密码不一致");
             var entity = _dbContext.Find<UserEntity>(input.Id);
-            entity.PasswordHash = HashAlgorithmHelper.ComputeMD5(input.Password); ;
+            entity.PasswordHash = HashAlgorithmHelper.ComputeMD5(input.Password);
+            _dbContext.SetUpdateAudit(entity);
         }
 
         public void SetRole(SetRoleInputDto input)
         {
             var list = _dbContext.Set<UserRoleEntity>().Where(t => t.UserId == input.UserId).ToList();
             var listRemove = list.Where(t => !input.RoleIds.Contains(t.RoleId)).ToArray();
-            _dbContext.RemoveRange(listRemove);
+            _dbContext.RemoveWithAudit(listRemove);
 
             var listExistRoleId = list.Select(t => t.RoleId).ToList();
             var listAdd = input.RoleIds.Where(t => !listExistRoleId.Contains(t))
                 .Select(t => new UserRoleEntity()
                 {
-                    Id = Guid.NewGuid(),
                     UserId = input.UserId,
                     RoleId = t,
                 });
-            _dbContext.AddRange(listAdd);
+            _dbContext.AddWithAudit(listAdd);
         }
 
         public void Update(UpdateInputDto input)
         {
             var entity = _dbContext.Find<UserEntity>(input.Id);
             _mapper.Map(input, entity);
-            _dbContext.Add(entity);
+            _dbContext.SetUpdateAudit(entity);
         }
     }
 }

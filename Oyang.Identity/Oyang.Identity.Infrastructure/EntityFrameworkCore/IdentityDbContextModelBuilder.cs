@@ -10,10 +10,23 @@ namespace Oyang.Identity.Infrastructure.EntityFrameworkCore
     {
         public static void OnOyangIdentityModelCreating(this ModelBuilder modelBuilder)
         {
+            AddEntityType(modelBuilder);
             SetTableName(modelBuilder);
             SetQueryFilter(modelBuilder);
         }
 
+        private static void AddEntityType(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Model.AddEntityType(typeof(DataDictionaryEntity));
+            modelBuilder.Model.AddEntityType(typeof(UserEntity));
+            modelBuilder.Model.AddEntityType(typeof(RoleEntity));
+            modelBuilder.Model.AddEntityType(typeof(UserRoleEntity));
+            modelBuilder.Model.AddEntityType(typeof(PermissionEntity));
+            modelBuilder.Model.AddEntityType(typeof(RolePermissionEntity));
+            modelBuilder.Model.AddEntityType(typeof(OrgEntity));
+            modelBuilder.Model.AddEntityType(typeof(MenuEntity));
+            modelBuilder.Model.AddEntityType(typeof(UserOrgEntity));
+        }
 
         private static void SetTableName(ModelBuilder modelBuilder)
         {
@@ -52,5 +65,6 @@ namespace Oyang.Identity.Infrastructure.EntityFrameworkCore
             modelBuilder.Entity<UserOrgEntity>().HasQueryFilter(t => !t.IsDeleted);
             modelBuilder.Entity<RolePermissionEntity>().HasQueryFilter(t => !t.IsDeleted);
         }
+
     }
 }

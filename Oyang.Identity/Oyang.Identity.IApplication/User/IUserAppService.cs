@@ -12,6 +12,7 @@ namespace Oyang.Identity.IApplication.User
     public interface IUserAppService : IApplicationService
     {
         Pagination<UserDto> GetList(GetListInputDto input);
+        UserDto Get(Guid id);
         void Add(AddInputDto input);
         void Update(UpdateInputDto input);
         void Remove(Guid id);

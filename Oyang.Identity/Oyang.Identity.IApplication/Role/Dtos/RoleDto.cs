@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Oyang.Identity.Domain.Entities
+namespace Oyang.Identity.IApplication.Role.Dtos
 {
-    public class PermissionEntity : Entity
+    public class RoleDto : IDto
     {
-        public string Code { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string SortId { get; set; }
     }
 }

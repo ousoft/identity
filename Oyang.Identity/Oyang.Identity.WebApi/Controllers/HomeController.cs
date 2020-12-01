@@ -18,24 +18,9 @@ namespace Oyang.Identity.WebApi.Controllers
             _logger = logger;
         }
 
-        class Student
-        {
-            public Guid Id { get; set; }
-            public string Name { get; set; }
-            public int Age { get; set; }
-            public DateTime CreateTime { get; set; }
-        }
-
         public IActionResult Index()
         {
-            var student1 = new Student() { Id = Guid.NewGuid(), Name = "夏欧阳1", Age = 30, CreateTime = DateTime.Now };
-            var student2 = new Student() { Id = Guid.NewGuid(), Name = "夏欧阳2", Age = 24, CreateTime = new DateTime(1990, 12, 1) };
-            var student3 = new Student() { Id = Guid.NewGuid(), Name = "夏欧阳3", Age = 26, CreateTime = new DateTime(1995, 1, 1) };
-            _logger.Log(LogLevel.Debug, "测试Debug：{@student1} / {@student2} / {@student3}", student1, null, student3);
-            _logger.Log(LogLevel.Debug, "测试Debug");
-            _logger.Log(LogLevel.Information, "测试Information");
-            _logger.Log(LogLevel.Warning, "测试Warning");
-            _logger.Log(LogLevel.Error, "测试Error");
+
             return View();
         }
 
@@ -49,5 +34,25 @@ namespace Oyang.Identity.WebApi.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult Test()
+        {
+            var student1 = new Student() { Id = Guid.NewGuid(), Name = "夏欧阳1", Age = 30, CreateTime = DateTime.Now };
+            var student2 = new Student() { Id = Guid.NewGuid(), Name = "夏欧阳2", Age = 24, CreateTime = new DateTime(1990, 12, 1) };
+            var student3 = new Student() { Id = Guid.NewGuid(), Name = "夏欧阳3", Age = 26, CreateTime = new DateTime(1995, 1, 1) };
+            _logger.Log(LogLevel.Debug, "测试Debug：{@student1} / {@student2} / {@student3}", student1, null, student3);
+            _logger.Log(LogLevel.Debug, "测试Debug");
+            _logger.Log(LogLevel.Information, "测试Information");
+            _logger.Log(LogLevel.Warning, "测试Warning");
+            _logger.Log(LogLevel.Error, "测试Error");
+            return Json("ok");
+        }
+    }
+    class Student
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public DateTime CreateTime { get; set; }
     }
 }

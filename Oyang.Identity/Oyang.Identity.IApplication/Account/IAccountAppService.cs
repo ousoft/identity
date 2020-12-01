@@ -11,6 +11,7 @@ namespace Oyang.Identity.IApplication.Account
 {
     public interface IAccountAppService :IApplicationService
     {
-        CurrentUser Login(LoginInputDto input);
+        CurrentUser Validate(LoginInputDto input);
+        CurrentUser Get(string loginName);
     }
 }
