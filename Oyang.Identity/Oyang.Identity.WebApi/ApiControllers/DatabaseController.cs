@@ -7,9 +7,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Oyang.Identity.IApplication.Database;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Oyang.Identity.WebApi.ApiControllers
 {
+    [AllowAnonymous]
     public class DatabaseController : BaseApiController
     {
         private readonly ILogger<DatabaseController> _logger;
@@ -25,17 +27,15 @@ namespace Oyang.Identity.WebApi.ApiControllers
         }
 
         [HttpGet]
-        public IActionResult GenerateDatabase()
+        public ActionResult<bool> GenerateDatabase()
         {
-            var model = _databaseAppService.GenerateDatabase();
-            return Ok(model);
+            return _databaseAppService.GenerateDatabase();
         }
 
         [HttpGet]
-        public IActionResult GenerateSeedData()
+        public void GenerateSeedData()
         {
             _databaseAppService.GenerateSeedData();
-            return Ok();
         }
 
     }

@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 namespace Oyang.Identity.WebApi.ApiControllers
 {
     [Authorize]
-    //[ApiController]
+    [ApiController]
+    //[Produces("application/json")]
     [Route("api/[Controller]/[Action]")]
     public abstract class BaseApiController : ControllerBase
     {

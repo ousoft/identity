@@ -34,7 +34,7 @@ namespace Oyang.Identity.WebApi.ApiControllers
             return Ok(model);
         }
 
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         [Permission(nameof(PermissionNames.User_Get))]
         public IActionResult Get(Guid id)
         {
@@ -58,7 +58,7 @@ namespace Oyang.Identity.WebApi.ApiControllers
             return Ok();
         }
 
-        [HttpPost("id")]
+        [HttpPost("{id}")]
         [Permission(nameof(PermissionNames.User_Remove))]
         public IActionResult Remove(Guid id)
         {

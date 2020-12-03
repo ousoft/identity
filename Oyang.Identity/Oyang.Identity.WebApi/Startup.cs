@@ -16,6 +16,8 @@ using Oyang.Identity.Application;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Mvc;
+using Oyang.Identity.Infrastructure.Common;
 
 namespace Oyang.Identity.WebApi
 {
@@ -24,7 +26,6 @@ namespace Oyang.Identity.WebApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
         public IConfiguration Configuration { get; }
@@ -32,9 +33,48 @@ namespace Oyang.Identity.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-            //services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            IAppSettings appSettings = new AppSettings();
+            Configuration.Bind(appSettings);
+            services.AddSingleton(appSettings);
+
+            services.AddControllersWithViews()
+                .AddRazorRuntimeCompilation()
+                .AddMvcOptions(t => t.Filters.Add(new Filters.WebApiResponseExceptionFilter()));
+
             services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
+
+            services.AddSwaggerGen(options => options.CustomSchemaIds(t => t.FullName));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                 {
+                     options.TokenValidationParameters = new TokenValidationParameters
+                     {
+                         ValidIssuer = appSettings.Jwt.Issuer,
+                         ValidAudience = appSettings.Jwt.Audience,
+                         IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(appSettings.Jwt.SecurityKey)),
+                         ClockSkew = TimeSpan.Zero,
+                         ValidateIssuer = true,
+                         ValidateAudience = true,
+                         ValidateIssuerSigningKey = true,
+                         ValidateLifetime = true,
+
+                         /***********************************TokenValidationParameters的参数默认值***********************************/
+                         // RequireSignedTokens = true,
+                         // SaveSigninToken = false,
+                         // ValidateActor = false,
+                         // 将下面两个参数设置为false，可以不验证Issuer和Audience，但是不建议这样做。
+                         // ValidateAudience = true,
+                         // ValidateIssuer = true, 
+                         // ValidateIssuerSigningKey = false,
+                         // 是否要求Token的Claims中必须包含Expires
+                         // RequireExpirationTime = true,
+                         // 允许的服务器时间偏移量
+                         // ClockSkew = TimeSpan.FromSeconds(300),
+                         // 是否验证Token有效期，使用当前时间与Token的Claims中的NotBefore和Expires对比
+                         // ValidateLifetime = true
+                     };
+                 });
             //services.AddCors(options =>
             //{
             //    var originsString = Configuration.GetValue<string>("Origins");
@@ -45,32 +85,6 @@ namespace Oyang.Identity.WebApi
             //            builder.WithOrigins(origins).AllowAnyHeader().AllowAnyMethod();
             //        });
             //});
-
-            services.AddSwaggerGen(options => options.CustomSchemaIds(t => t.FullName));
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                var jwtSection = Configuration.GetSection("jwt");
-                var issuer = jwtSection.GetValue<string>("issuer");
-                var audience = jwtSection.GetValue<string>("audience");
-                var securityKey = jwtSection.GetValue<string>("securityKey");
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(securityKey)),
-
-                    ValidateIssuer = true,
-                    ValidIssuer = issuer,
-
-                    ValidateAudience = true,
-                    ValidAudience = audience,
-
-                    ValidateLifetime = true,
-
-                    ClockSkew = TimeSpan.FromMinutes(5)
-                };
-            });
-
             services.AddSingleton<IMapper>(t =>
             {
                 var mapperConfiguration = new MapperConfiguration(t =>
@@ -105,12 +119,12 @@ namespace Oyang.Identity.WebApi
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-             });
+            });
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-            //app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

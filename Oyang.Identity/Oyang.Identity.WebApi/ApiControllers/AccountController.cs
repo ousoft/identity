@@ -13,15 +13,18 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace Oyang.Identity.WebApi.ApiControllers
 {
+    [AllowAnonymous]
     public class AccountController : BaseApiController
     {
         private readonly ILogger<AccountController> _logger;
         private readonly IAccountAppService _accountAppService;
         private readonly IConfiguration _configuration;
-        private readonly IMemoryCache  _memoryCache;
+        private readonly IMemoryCache _memoryCache;
 
         public AccountController(
             ILogger<AccountController> logger,
@@ -36,36 +39,39 @@ namespace Oyang.Identity.WebApi.ApiControllers
             _memoryCache = memoryCache;
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPost]
-        public IActionResult GenerateToken(LoginInputDto input)
+        public ActionResult<string> GenerateToken(LoginInputDto input)
         {
-            var currentUser = _accountAppService.Validate(input);
-
-            var jwtSection = _configuration.GetSection("jwt");
-            var issuer = jwtSection.GetValue<string>("issuer");
-            var audience = jwtSection.GetValue<string>("audience");
-            var securityKey = jwtSection.GetValue<string>("securityKey");
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(securityKey));
-            var claims = new Claim[]
-            {
-                new Claim(JwtRegisteredClaimNames.NameId, currentUser.LoginName),
-                new Claim(JwtRegisteredClaimNames.Sub, currentUser.Id.ToString()),
-            };
-            var now = DateTime.UtcNow;
-            var jwtSecurityToken = new JwtSecurityToken(
-                   issuer: issuer,
-                   audience: audience,
-                   claims: claims,
-                   notBefore: now,
-                   expires: now.AddMinutes(20),
-                signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
-               );
-            var jwtToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-
-            _memoryCache.Set("CurrentUser", currentUser, TimeSpan.FromMinutes(20));
-            return Ok(jwtToken);
+            return _accountAppService.GenerateToken(input);
         }
 
+        [HttpPost]
+        public ActionResult<string> RefreshToken(string token)
+        {
+            try
+            {
+                return _accountAppService.RefreshToken(token);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult<string> GetToken()
+        {
+            var input = new LoginInputDto() { LoginName = "admin", Password = "123" };
+            var token = _accountAppService.GenerateToken(input);
+            //if (!_memoryCache.TryGetValue("Token_admin", out string token))
+            //{
+            //    var input = new LoginInputDto() { LoginName = "admin", Password = "123" };
+            //    token = _accountAppService.GenerateToken(input);
+            //    _memoryCache.Set("Token_admin", token, TimeSpan.FromMinutes(20));
+            //}
+            return token;
+        }
     }
 
 }

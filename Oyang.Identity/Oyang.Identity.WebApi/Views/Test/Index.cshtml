@@ -1,0 +1,95 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oyang.Identity.WebApi</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div class="container">
+        <main role="main" class="pb-3">
+            <button id="btnGetToken">获取token</button>
+            <button id="btnRefreshToken">刷新token</button>
+            <button id="btnTestApi">测试api</button>
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - Oyang.Identity.WebApi - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        $(function () {
+            let token = "";
+            $("#btnGetToken").on("click", function () {
+                $.ajax({
+                    type: 'get',
+                    contentType: 'application/json',
+                    url: 'https://localhost:44354/api/Account/GetToken',
+                    beforeSend: function (xhr) {
+                    },
+                    success: function (data) {
+                        token = data;
+                        console.log("GetToken:" + data);
+                    },
+                    error: function (xhr) {
+                        alert(xhr.status);
+                    }
+                });
+            });
+            $("#btnRefreshToken").on("click", function () {
+                $.ajax({
+                    type: 'post',
+                    contentType: 'application/json',
+                    url: 'https://localhost:44354/api/Account/RefreshToken?token=' + token,
+                    //data: {
+                    //    "token": token
+                    //},
+                    beforeSend: function (xhr) {
+                        if (token !== null) {
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                        }
+                    },
+                    success: function (data) {
+                        token = data;
+                        console.log("RefreshToken:" + data);
+                    },
+                    error: function (xhr) {
+                        alert(xhr.status);
+                    }
+                });
+            });
+            $("#btnTestApi").on("click", function () {
+                $.ajax({
+                    type: 'get',
+                    contentType: 'application/json',
+                    url: 'https://localhost:44354/api/User/Get/430160D6-F0D9-4560-9D12-6B4764E34C6B',
+                    beforeSend: function (xhr) {
+                        if (token !== null) {
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                        }
+                    },
+                    success: function (data) {
+                        console.log("TestApi:" + JSON.stringify(data));
+                    },
+                    error: function (xhr) {
+                        alert(xhr.status);
+                    }
+                });
+            });
+
+        });
+
+    </script>
+</body>
+</html>
