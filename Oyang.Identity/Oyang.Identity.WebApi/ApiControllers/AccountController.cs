@@ -23,20 +23,14 @@ namespace Oyang.Identity.WebApi.ApiControllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly IAccountAppService _accountAppService;
-        private readonly IConfiguration _configuration;
-        private readonly IMemoryCache _memoryCache;
 
         public AccountController(
             ILogger<AccountController> logger,
-            IAccountAppService accountAppService,
-            IConfiguration configuration,
-            IMemoryCache memoryCache
+            IAccountAppService accountAppService
             )
         {
             _logger = logger;
             _accountAppService = accountAppService;
-            _configuration = configuration;
-            _memoryCache = memoryCache;
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]

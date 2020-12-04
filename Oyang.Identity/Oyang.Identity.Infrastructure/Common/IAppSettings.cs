@@ -9,6 +9,7 @@ namespace Oyang.Identity.Infrastructure.Common
     public interface IAppSettings
     {
         public IJwt Jwt { get; }
+        public IReadOnlyList<string> AllowedHostList { get; }
     }
     public interface IJwt
     {

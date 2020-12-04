@@ -85,6 +85,14 @@ namespace Oyang.Identity.WebApi
             //            builder.WithOrigins(origins).AllowAnyHeader().AllowAnyMethod();
             //        });
             //});
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                                  {
+                                      builder.WithOrigins(appSettings.AllowedHostList.ToArray()).AllowAnyHeader().AllowAnyMethod();
+                                  });
+            });
             services.AddSingleton<IMapper>(t =>
             {
                 var mapperConfiguration = new MapperConfiguration(t =>
@@ -122,6 +130,8 @@ namespace Oyang.Identity.WebApi
             });
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();

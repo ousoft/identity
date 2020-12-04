@@ -14,6 +14,9 @@ namespace Oyang.Identity.Infrastructure.Common
         }
         public IJwt Jwt { get; set; }
 
+        public string AllowedHosts { get; set; }
+
+        public IReadOnlyList<string> AllowedHostList => AllowedHosts.Split(",").ToList();
     }
     public class Jwt : IJwt
     {
