@@ -21,6 +21,7 @@ module.exports = {
         "allowFirstLine": false
       }
     }],
+    "vue/html-self-closing": "off",
     "vue/singleline-html-element-content-newline": "off",
     "vue/multiline-html-element-content-newline":"off",
     "vue/name-property-casing": ["error", "PascalCase"],
@@ -82,6 +83,7 @@ module.exports = {
     'no-dupe-class-members': 2,
     'no-dupe-keys': 2,
     'no-duplicate-case': 2,
+    'no-empty': 0,
     'no-empty-character-class': 2,
     'no-empty-pattern': 2,
     'no-eval': 2,
@@ -137,12 +139,12 @@ module.exports = {
     'no-undef-init': 2,
     'no-unexpected-multiline': 2,
     'no-unmodified-loop-condition': 2,
-    'no-unneeded-ternary': [2, {
+    'no-unneeded-ternary': [0, {
       'defaultAssignment': false
     }],
     'no-unreachable': 2,
     'no-unsafe-finally': 2,
-    'no-unused-vars': [2, {
+    'no-unused-vars': [0, {
       'vars': 'all',
       'args': 'none'
     }],
@@ -172,7 +174,7 @@ module.exports = {
       'after': true
     }],
     'space-before-blocks': [2, 'always'],
-    'space-before-function-paren': [2, 'never'],
+    'space-before-function-paren': [0, 'never'],
     'space-in-parens': [2, 'never'],
     'space-infix-ops': 2,
     'space-unary-ops': [2, {

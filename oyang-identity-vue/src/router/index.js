@@ -54,6 +54,27 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
+  {
+    path: '/identity',
+    component: Layout,
+    redirect: '/identity/user',
+    name: 'Identity',
+    meta: { title: 'Identity', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'user',
+        name: 'User',
+        component: () => import('@/views/identity/user/index'),
+        meta: { title: 'User', icon: 'dashboard' }
+      },
+      {
+        path: 'role',
+        name: 'Role',
+        component: () => import('@/views/identity/role/index'),
+        meta: { title: 'Role', icon: 'dashboard' }
+      }
+    ]
+  },
 
   {
     path: '/example',
