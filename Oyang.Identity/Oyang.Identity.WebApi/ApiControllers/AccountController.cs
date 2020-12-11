@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Oyang.Identity.Infrastructure.Common;
 
 namespace Oyang.Identity.WebApi.ApiControllers
 {
@@ -23,19 +24,22 @@ namespace Oyang.Identity.WebApi.ApiControllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly IAccountAppService _accountAppService;
+        private readonly IMemoryCache _memoryCache;
 
         public AccountController(
             ILogger<AccountController> logger,
-            IAccountAppService accountAppService
+            IAccountAppService accountAppService,
+            IMemoryCache memoryCache
             )
         {
             _logger = logger;
             _accountAppService = accountAppService;
+            _memoryCache = memoryCache;
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPost]
-        public ActionResult<string> GenerateToken(LoginInputDto input)
+        public string GenerateToken(LoginInputDto input)
         {
             return _accountAppService.GenerateToken(input);
         }
@@ -49,22 +53,21 @@ namespace Oyang.Identity.WebApi.ApiControllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status401Unauthorized);
+                return StatusCode(StatusCodes.Status403Forbidden);
             }
         }
 
+        [Authorize]
         [HttpGet]
-        public ActionResult<string> GetToken()
+        public CurrentUser UserInfo()
         {
-            var input = new LoginInputDto() { LoginName = "admin", Password = "123" };
-            var token = _accountAppService.GenerateToken(input);
-            //if (!_memoryCache.TryGetValue("Token_admin", out string token))
-            //{
-            //    var input = new LoginInputDto() { LoginName = "admin", Password = "123" };
-            //    token = _accountAppService.GenerateToken(input);
-            //    _memoryCache.Set("Token_admin", token, TimeSpan.FromMinutes(20));
-            //}
-            return token;
+            var memoryKey = $"CurrentUser_{User.Identity.Name}";
+            if (!_memoryCache.TryGetValue(memoryKey, out CurrentUser currentUser))
+            {
+                currentUser = _accountAppService.GetCurrentUser(User.Identity.Name);
+                _memoryCache.Set(memoryKey, currentUser, TimeSpan.FromMinutes(20));
+            }
+            return currentUser;
         }
     }
 

@@ -41,7 +41,7 @@ namespace Oyang.Identity.Application.Database
         private void GenerateSeedDataByUser()
         {
             var list = new List<UserEntity>();
-            var passwordHash = HashAlgorithmHelper.ComputeMD5("123");
+            var passwordHash = HashAlgorithmHelper.ComputeMD5("123456");
             list.Add(new UserEntity() { Id = new Guid("430160D6-F0D9-4560-9D12-6B4764E34C6B"), LoginName = "admin", PasswordHash = passwordHash });
             for (int i = 0; i < 133; i++)
             {

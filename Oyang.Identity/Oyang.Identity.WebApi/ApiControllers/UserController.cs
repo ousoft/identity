@@ -28,10 +28,9 @@ namespace Oyang.Identity.WebApi.ApiControllers
 
         [HttpGet]
         [Permission(nameof(PermissionNames.User_GetList))]
-        public IActionResult GetList(GetListInputDto input)
+        public ActionResult<Pagination<UserDto>> GetList(GetListInputDto input)
         {
-            var model = _userAppService.GetList(input);
-            return Ok(model);
+            return _userAppService.GetList(input);
         }
 
         [HttpGet("{id}")]

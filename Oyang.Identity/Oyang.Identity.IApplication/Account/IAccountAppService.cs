@@ -13,5 +13,6 @@ namespace Oyang.Identity.IApplication.Account
     {
         string GenerateToken(LoginInputDto input);
         string RefreshToken(string token);
+        CurrentUser GetCurrentUser(string loginName);
     }
 }

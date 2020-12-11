@@ -39,7 +39,8 @@ namespace Oyang.Identity.WebApi
 
             services.AddControllersWithViews()
                 .AddRazorRuntimeCompilation()
-                .AddMvcOptions(t => t.Filters.Add(new Filters.WebApiResponseExceptionFilter()));
+                .AddMvcOptions(t => t.Filters.Add(new Filters.WebApiResponseExceptionFilter()))
+                .ConfigureApiBehaviorOptions(t => t.SuppressInferBindingSourcesForParameters = true);
 
             services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
 

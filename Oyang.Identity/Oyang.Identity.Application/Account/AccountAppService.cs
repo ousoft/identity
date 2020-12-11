@@ -41,11 +41,6 @@ namespace Oyang.Identity.Application.Account
             ValidationObject.Validate(userEntity == null, "登录名不存在");
             var passwordHash = HashAlgorithmHelper.ComputeMD5(input.Password);
             ValidationObject.Validate(userEntity.PasswordHash != passwordHash, "密码不正确");
-            if (!_memoryCache.TryGetValue($"CurrentUser_{userEntity.Id}", out CurrentUser currentUser))
-            {
-                currentUser = Get(input.LoginName);
-                _memoryCache.Set($"CurrentUser_{userEntity.Id}", currentUser, TimeSpan.FromMinutes(20));
-            }
             var jwtToken = CreateToken(userEntity.LoginName);
             return jwtToken;
         }
@@ -71,18 +66,6 @@ namespace Oyang.Identity.Application.Account
             return jwtToken;
         }
 
-        private CurrentUser Get(string loginName)
-        {
-            var entity = _dbContext.Set<UserEntity>().Single(t => t.LoginName == loginName);
-            var roleIds = _dbContext.Set<UserRoleEntity>().AsNoTracking().Where(t => t.UserId == entity.Id).Select(t => t.RoleId).ToList();
-            var roles = _dbContext.Set<RoleEntity>().AsNoTracking().Where(t => roleIds.Contains(t.Id)).Select(t => t.Name).ToList();
-            var permissionIds = _dbContext.Set<RolePermissionEntity>().AsNoTracking().Where(t => roleIds.Contains(t.RoleId)).Select(t => t.PermissionId).Distinct().ToList();
-            var permissions = _dbContext.Set<PermissionEntity>().AsNoTracking().Where(t => permissionIds.Contains(t.Id)).Select(t => t.Code).ToList();
-
-            var currentUser = new CurrentUser(entity.Id, entity.LoginName, roles, permissions);
-            return currentUser;
-        }
-
         private string CreateToken(string name)
         {
             var now = DateTime.Now;
@@ -103,6 +86,18 @@ namespace Oyang.Identity.Application.Account
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var jwtToken = jwtSecurityTokenHandler.WriteToken(jwtSecurityToken);
             return jwtToken;
+        }
+
+        public CurrentUser GetCurrentUser(string loginName)
+        {
+            var entity = _dbContext.Set<UserEntity>().Single(t => t.LoginName == loginName);
+            var roleIds = _dbContext.Set<UserRoleEntity>().AsNoTracking().Where(t => t.UserId == entity.Id).Select(t => t.RoleId).ToList();
+            var roles = _dbContext.Set<RoleEntity>().AsNoTracking().Where(t => roleIds.Contains(t.Id)).Select(t => t.Name).ToList();
+            var permissionIds = _dbContext.Set<RolePermissionEntity>().AsNoTracking().Where(t => roleIds.Contains(t.RoleId)).Select(t => t.PermissionId).Distinct().ToList();
+            var permissions = _dbContext.Set<PermissionEntity>().AsNoTracking().Where(t => permissionIds.Contains(t.Id)).Select(t => t.Code).ToList();
+
+            var currentUser = new CurrentUser(entity.Id, entity.LoginName, roles, permissions);
+            return currentUser;
         }
     }
 }
