@@ -70,15 +70,15 @@ export default {
   name: 'Login',
   data() {
     const validateLoginName = (rule, value, callback) => {
-      if (!validLoginName(value)) {
-        callback(new Error('Please enter the correct loginname'))
+      if (value.trim() <= 0) {
+        callback(new Error('请输入登录名'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        callback(new Error('密码不能小于6个字符'))
       } else {
         callback()
       }

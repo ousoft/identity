@@ -122,10 +122,10 @@ const actions = {
           reject(error)
         })
     })
-  },  
+  },
   requestLoadingStart({ commit }) {
     commit('requestLoadingStart')
-  }, 
+  },
   requestLoadingEnd({ commit }) {
     commit('requestLoadingEnd')
   }
