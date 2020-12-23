@@ -12,11 +12,14 @@ namespace Oyang.Identity.Infrastructure.Common
         {
             Jwt = new Jwt();
         }
+
         public IJwt Jwt { get; set; }
 
         public string AllowedHosts { get; set; }
 
         public IReadOnlyList<string> AllowedHostList => AllowedHosts.Split(",").ToList();
+
+        public string DefaultConnectionString { get; set; }
     }
     public class Jwt : IJwt
     {

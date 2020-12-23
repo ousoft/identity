@@ -8,8 +8,9 @@ namespace Oyang.Identity.Infrastructure.Common
 {
     public interface IAppSettings
     {
-        public IJwt Jwt { get; }
-        public IReadOnlyList<string> AllowedHostList { get; }
+        string DefaultConnectionString { get; }
+        IJwt Jwt { get; }
+        IReadOnlyList<string> AllowedHostList { get; }
     }
     public interface IJwt
     {
@@ -17,5 +18,4 @@ namespace Oyang.Identity.Infrastructure.Common
         string Audience { get; }
         string SecurityKey { get; }
     }
-
 }

@@ -11,8 +11,8 @@ namespace Oyang.Identity.Infrastructure.Common
         public CurrentUser(
             Guid id,
             string loginName,
-            IReadOnlyList<string> roles,
-            IReadOnlyList<string> permissions
+            List<string> roles,
+            List<string> permissions
             )
         {
             Id = id;
